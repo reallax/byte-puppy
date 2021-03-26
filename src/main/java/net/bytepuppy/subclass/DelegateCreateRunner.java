@@ -17,7 +17,6 @@ import java.util.concurrent.Callable;
 
 /**
  * @author liuh
- * @email hong.liu@dmall.com
  * @date 2021/3/25
  */
 @Runner

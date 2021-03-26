@@ -8,7 +8,6 @@ import net.bytepuppy.Runner;
 
 /**
  * @author liuh
- * @email hong.liu@dmall.com
  * @date 2021/3/25
  */
 public class CreateClassMain {
@@ -29,7 +28,7 @@ public class CreateClassMain {
                 continue;
             }
 
-            System.out.println("Runner run: " + aClass.getName());
+            System.out.println(" ## Runner run: " + aClass.getName());
             Runnable run = (Runnable) aClass.newInstance();
             run.run();
         }

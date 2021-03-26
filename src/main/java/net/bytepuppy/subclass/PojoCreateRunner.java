@@ -2,7 +2,6 @@ package net.bytepuppy.subclass;
 
 import lombok.SneakyThrows;
 import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.modifier.ModifierContributor;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FieldAccessor;
