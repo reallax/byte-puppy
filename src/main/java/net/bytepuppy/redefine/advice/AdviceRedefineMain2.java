@@ -7,7 +7,9 @@ import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.loading.ByteArrayClassLoader;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
@@ -16,7 +18,7 @@ import java.lang.instrument.ClassFileTransformer;
 import java.util.List;
 
 /**
- * 断点进不去，时间不正确
+ * 不正确的ClassLoader，会导致advice失效
  *
  * @author liuh
  * @date 2021/3/26
@@ -25,6 +27,11 @@ public class AdviceRedefineMain2 {
 
     public static void main(String[] args) throws Exception {
         ByteBuddyAgent.install();
+
+        ClassLoader classLoader = new ByteArrayClassLoader.ChildFirst(AdviceRedefineMain2.class.getClassLoader(),
+                ClassFileLocator.ForClassLoader.readToNames(ComputeService.class),
+                ByteArrayClassLoader.PersistenceHandler.MANIFEST);
+        ClassLoader classLoader2 = ClassLoader.getSystemClassLoader();
 
         ClassFileTransformer classFileTransformer = new AgentBuilder.Default()
                 .with(AgentBuilder.PoolStrategy.Default.EXTENDED)
@@ -45,8 +52,10 @@ public class AdviceRedefineMain2 {
                 .installOnByteBuddyAgent();
 
 
-        Class<ComputeService> clazz = (Class<ComputeService>) ClassLoader
-                .getSystemClassLoader().loadClass(ComputeService.class.getName());
+        // classLoader2 can not worker
+        // change classLoader2 to classLoader, advice works
+        Class<ComputeService> clazz = (Class<ComputeService>) classLoader2
+                .loadClass(ComputeService.class.getName());
         Object service = clazz.getDeclaredConstructor().newInstance();
 
         Object result = clazz.getMethod("compute", String.class, List.class)

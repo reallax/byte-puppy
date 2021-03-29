@@ -24,7 +24,7 @@ public class AdviceRedefineMain {
         DynamicType.Unloaded dtu = new ByteBuddy()
                 .redefine(ComputeService.class)
                 .visit(Advice.to(AdviceTemplate.class)
-                        .on(ElementMatchers.isMethod()))
+                        .on(ElementMatchers.named("compute")))
                 .make();
 
         Class<?> clazz = dtu.load(ClassLoadingStrategy.BOOTSTRAP_LOADER,

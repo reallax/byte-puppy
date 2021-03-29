@@ -10,7 +10,7 @@ import net.bytebuddy.asm.Advice;
  * @date 2021/3/26
  */
 public class MyAdvices {
-    @Advice.OnMethodEnter(suppress = Throwable.class)
+    @Advice.OnMethodEnter(suppress = Throwable.class, prependLineNumber = false)
     static long enter(@Advice.This Object thisObject,
                       @Advice.Origin String origin,
                       @Advice.Origin("#t #m") String detaildOrigin,
@@ -32,7 +32,7 @@ public class MyAdvices {
         return System.nanoTime();
     }
 
-    @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
+    @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class, backupArguments = false)
     static void exit(@Advice.Enter long time){
         System.out.println("Inside exit method ...");
         System.out.println("Method Execution Time: " + (System.nanoTime() - time) + " nano seconds");

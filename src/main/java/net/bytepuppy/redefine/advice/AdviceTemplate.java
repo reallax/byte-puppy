@@ -9,37 +9,40 @@ import net.bytebuddy.asm.Advice;
  */
 public class AdviceTemplate {
 
-    private static LogInterceptor logInterceptor;
-    static {
-        logInterceptor = new LogInterceptor();
-    }
+//    private static LogInterceptor logInterceptor;
+//    static {
+//        logInterceptor = new LogInterceptor();
+//    }
 
     /**
      * @Advice.OnMethodEnter 必须是静态方法
      *
-     * @param thisObject
-     * @param origin
-     * @param detaildOrigin
-     * @param args
+//     * @param thisObject
+//     * @param origin
+//     * @param detaildOrigin
+//     * @param args
      * @return
      */
     @Advice.OnMethodEnter(suppress = Throwable.class)
-    public static long beforeMethod(@Advice.This Object thisObject,
+    public static long beforeMethod(/*@Advice.This Object thisObject,
                                     @Advice.Origin String origin,
                                     @Advice.Origin("#t #m") String detaildOrigin,
-                                    @Advice.AllArguments Object[] args) {
+                                    @Advice.AllArguments Object[] args*/) {
 
         StringBuilder logBuilder = new StringBuilder();
 
-        if(args != null) {
-            for(int i =0 ; i < args.length ; i++) {
-                logBuilder.append("Argument- " + i + " is: " + args[i] + ", ");
-            }
-            logBuilder.delete(logBuilder.length() - 2, logBuilder.length());
-        }
+//        if(args != null) {
+//            for(int i =0 ; i < args.length ; i++) {
+//                logBuilder.append("Argument- " + i + " is: " + args[i] + ", ");
+//            }
+//            logBuilder.delete(logBuilder.length() - 2, logBuilder.length());
+//        }
 
-        logInterceptor.log(logBuilder.toString());
-        return System.currentTimeMillis();
+//        LogInterceptor.log(logBuilder.toString());
+//        log(logBuilder.toString());
+        long startTime = System.currentTimeMillis();
+        System.out.println("start time: " + startTime);
+        return startTime;
     }
 
     /**
@@ -50,6 +53,13 @@ public class AdviceTemplate {
      */
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
     public static void afterMethod(@Advice.Enter long time, @Advice.Return Object ret) {
-        System.out.println("Method Execution Cost Time: " + (System.currentTimeMillis() - time) + " mills");
+        long endTime = System.currentTimeMillis();
+        System.out.println("end time: " + endTime);
+        System.out.println("Method Execution Cost Time: " + (endTime - time) + " mills");
+    }
+
+
+    private static void log(String log) {
+        System.out.println(log);
     }
 }
