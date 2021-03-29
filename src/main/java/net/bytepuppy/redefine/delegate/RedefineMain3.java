@@ -50,6 +50,10 @@ public class RedefineMain3 {
                 // ClassLoadingStrategy.Default.CHILD_FIRST，name定义可以省略
                 .name(DemoService.class.getName())
                 .method(ElementMatchers.named("report"))
+                /**
+                 * 网上有资料用MethodDelegation.to(Log4j.class)的方式实现方法代理
+                 * 但是实际使用时，切面的应用场景比较多，而切面中必须要求原方法依然可见，这是与网上简单的demo示例的区别
+                 */
                 .intercept(MethodDelegation.to(new DelegateTemplate(new DemoServiceInterceptor())))
                 .make();
 

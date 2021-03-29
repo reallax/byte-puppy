@@ -6,5 +6,5 @@ package net.bytepuppy.redefine.delegate.office;
  * @date 2021/3/26
  */
 public class Foo {
-    String m() { return "foo"; }
+    public String m() { return "foo"; }
 }
